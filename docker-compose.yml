@@ -1,0 +1,45 @@
+version: "2.0"
+
+services:
+  ### PHP-FPM ##############################################
+  php-fpm:
+    environment:
+      - TZ=Asia/Shanghai
+    build:
+      context: ./php-fpm
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - INSTALL_SOAP=${INSTALL_SOAP}
+        - INSTALL_ZIP_ARCHIVE=${INSTALL_ZIP_ARCHIVE}
+        - INSTALL_BCMATH=${INSTALL_BCMATH}
+        - INSTALL_OPCACHE=${INSTALL_OPCACHE}
+        - INSTALL_EXIF=${INSTALL_EXIF}
+        - INSTALL_MYSQLI=${INSTALL_MYSQLI}
+        - INSTALL_INTL=${INSTALL_INTL}
+        - INSTALL_GHOSTSCRIPT=${INSTALL_GHOSTSCRIPT}
+        - INSTALL_IMAGEMAGICK=${INSTALL_IMAGEMAGICK}
+        - INSTALL_MCRYPT=${INSTALL_MCRYPT}
+        - INSTALL_REDIS=${INSTALL_REDIS}
+        - INSTALL_SWOOLE=${INSTALL_SWOOLE}
+    volumes:
+      - ./php-fpm/conf/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+
+  ### nginx Server #########################################
+  nginx:
+    build:
+      context: ./nginx
+      args:
+        - NGINX_VERSION=${NGINX_VERSION}
+        - PHP_UPSTREAM_CONTAINER=${PHP_UPSTREAM_CONTAINER}
+        - PHP_UPSTREAM_PORT=${PHP_UPSTREAM_PORT}
+    volumes:
+      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+      - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
+      - ${NGINX_SITES_PATH}:/etc/nginx/vhost
+    ports:
+      - ${NGINX_HOST_HTTP_PORT}:80
+    depends_on:
+      - php-fpm
+    links:
+      - php-fpm
