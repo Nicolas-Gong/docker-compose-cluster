@@ -125,11 +125,11 @@ RUN if [ ${INSTALL_SWOOLE} = true ]; then \
     ;fi
 
 COPY ./conf/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
-COPY ./conf/tp.ini /usr/local/etc/php/conf.d
-RUN rm /usr/local/etc/php-fpm.d/www.conf
-COPY ./conf/php-fpm.d /usr/local/etc/php-fpm.d
-RUN rm /usr/local/etc/php-fpm.conf
-COPY ./conf/php-fpm.conf /usr/local/etc/php-fpm.conf
+#COPY ./conf/tp.ini /usr/local/etc/php/conf.d
+#RUN rm /usr/local/etc/php-fpm.d/www.conf
+#COPY ./conf/php-fpm.d /usr/local/etc/php-fpm.d
+#RUN rm /usr/local/etc/php-fpm.conf
+#COPY ./conf/php-fpm.conf /usr/local/etc/php-fpm.conf
 
 ARG APP_CODE_PATH_CONTAINER=/var/www
 WORKDIR ${APP_CODE_PATH_CONTAINER}

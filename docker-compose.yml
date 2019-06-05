@@ -1,4 +1,4 @@
-version: "2.0"
+version: "2.2"
 
 services:
   ### PHP-FPM ##############################################
@@ -22,7 +22,7 @@ services:
         - INSTALL_REDIS=${INSTALL_REDIS}
         - INSTALL_SWOOLE=${INSTALL_SWOOLE}
     volumes:
-      - ./php-fpm/conf/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+#      - ./php-fpm/conf/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
 
   ### nginx Server #########################################
