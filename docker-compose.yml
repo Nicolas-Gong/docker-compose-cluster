@@ -22,8 +22,8 @@ services:
         - INSTALL_REDIS=${INSTALL_REDIS}
         - INSTALL_SWOOLE=${INSTALL_SWOOLE}
     volumes:
-#      - ./php-fpm/conf/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+#      - ./php-fpm/conf/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
 
   ### nginx Server #########################################
   nginx:
@@ -43,3 +43,16 @@ services:
       - php-fpm
     links:
       - php-fpm
+
+  ### redis Server #########################################
+  redis:
+    build:
+      context: ./redis
+      args:
+        - REDIS_VERSION=${REDIS_VERSION}
+        - REDIS_DOWNLOAD_SHA=${REDIS_DOWNLOAD_SHA}
+        - GOSU_VERSION=${GOSU_VERSION}
+    ports:
+      - ${REDIS_HOST_HTTP_PORT}:6379
+    depends_on:
+      - nginx
